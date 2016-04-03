@@ -10,6 +10,6 @@ e = Tesseract::Engine.new {|e|
   e.blacklist = '|'
 }
 
-test = e.text_for(Dir.pwd + '/pdf/first.png').strip
+test = e.text_for(Dir.pwd + '/images/first.png')
 
 puts test
