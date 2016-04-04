@@ -5,25 +5,45 @@ ENV['LDFLAGS'] = '-L/usr/local/Cellar/tesseract/3.02.02_3/lib -L/usr/local/Cella
 
 require 'tesseract'
 require 'pdf-reader'
-
-# PDF reader test
-
-pdf = PDF::Reader.new(Dir.pwd + '/images/summary.pdf')
-
-puts "PDF"
-pdf.pages.each do |page|
-  puts page.text
-end
-
+require 'pry'
 
 # OCR test
 
-e = Tesseract::Engine.new {|e|
-  e.language  = :eng
-  e.blacklist = '|'
-}
+# e = Tesseract::Engine.new {|e|
+#   e.language  = :eng
+#   e.blacklist = '|'
+# }
 
-test = e.text_for(Dir.pwd + '/images/summary.jpg')
+# test = e.text_for(Dir.pwd + '/images/app1.jpg')
 
-puts "IMAGE"
-puts test
+# PDF reader test
+
+def pdf_to_text(path)
+  pdf = PDF::Reader.new(Dir.pwd + path)
+  raw_text = ""
+  pdf.pages.each do |page|
+    raw_text += page.text
+  end
+  return raw_text
+end
+
+def parse_to_map(text)
+  hash = Hash.new
+  lines = text.gsub(/\:(\s{2,})/, ': ').gsub(/(\s){2,}/, "\n")
+  lines.each_line do | line |
+    unless /\:/.match(line).nil?
+      pair = line.split(':')
+      hash[pair[0]] = pair[1].strip
+    end
+  end
+  return hash
+end
+
+data = parse_to_map(pdf_to_text('/images/summary.pdf'))
+
+pp data
+
+def extract_data(text)
+  match = /(Applicant\(s\)).*/.match(text)
+  puts match
+end
