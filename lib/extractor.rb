@@ -9,18 +9,31 @@ class Extractor
 
   attr_accessor :key_hash
 
-  def train(data, hash)
-    # Remove duplicate spaces and newlines
-    data = data.gsub(/[\n\r]/," ").squeeze(' ')
+  # train data is an array containing hashes with the corresponding document and successfully extracted hash
+  def train(train_data)
+    result = []
 
-    hash.each do |key, prop|
-      if match = /\s(\S+)\s#{prop}\s(\S+)\s/.match(data)
-        before, after = match.captures
-        @key_hash[key] = [before, after]
-      else
-        puts "Error: #{match} was not found in data string."
+    train_data.each do | train_set |
+      # Remove duplicate spaces and newlines
+      doc = train_set[:doc].gsub(/[\n\r]/," ").squeeze(' ')
+
+      match_keys = {}
+
+      train_set[:to_extract].each do |key, prop|
+        if matches = doc.scan(/\s(\S+)\s#{prop}\s(\S+)\s/)
+          match_keys[key] = matches
+          puts "Success, #{prop} was matched #{matches.count} time(s)"
+        else
+          puts "Error: #{match} was not found in data string."
+        end
       end
+
+      result.push match_keys
     end
+    i = 0
+    pp result[i][:name]
+    pp result[i+1][:name]
+    # pp result[i][:name] & result[i+1][:name]
   end
 
   def extract(data)
