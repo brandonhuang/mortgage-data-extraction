@@ -18,9 +18,14 @@ train_hash = {
   name: "Mr. Brandon Huang",
   assets: "Savings BNS Account $ 10,000.00 RRSP RBC Mutual Fund $ 3,000.00 Vehicle 1967 Mustang $ 25,000.00 Stocks/Bonds/Mutual Apple $ 1,000.00 Household Goods Comic collection $ 3,000.00 Life Insurance Surrender Value $ 30,000.00 Total: $ 72,000.00",
   liabilities: "Credit Card BNS Master Card $ 10,000.00 $ 1,200.00 $ 36.00 Totals $ 10,000.00 $ 1,200.00 $ 36.00",
-  edge: "ALT Mortgages MORTGAGE",
   existing_mortgage: "$ 140,000.00",
-  requested_mortgage: "$ 125,000.00"
+  requested_mortgage: "$ 125,000.00",
+  propert_age: "4 Years",
+  living_space: "1000 Sq Ft",
+  lot_size: "3000 Sq Ft",
+  dwelling_type: "Detached",
+  dwelling_style: "One Storey",
+  garage_size: "Single",
 }
 
 # train
