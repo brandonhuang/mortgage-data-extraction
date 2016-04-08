@@ -5,7 +5,7 @@ ENV['LDFLAGS'] = '-L/usr/local/Cellar/tesseract/3.02.02_3/lib -L/usr/local/Cella
 
 require 'tesseract'
 module ImageProcessors
-  class Tesseract
+  class TesseractOCR
     attr_reader :path
 
     def initialize(path)

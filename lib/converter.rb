@@ -1,9 +1,10 @@
+require_relative 'image_processors/tesseract_ocr'
+require_relative 'text_extractors/pdf_reader'
 require 'pry'
 require 'pdf-reader'
 require 'tesseract'
 
 class Converter
- 
   def self.call(path)
     file = new(path)
     file.to_s
@@ -22,12 +23,12 @@ class Converter
   private 
 
   
-  def load_converter
+  def load_converter(path)
     case File.extname(@path)
     when ".pdf"  
-      @converter = @options.fetch(:ocr) { ImageProcessors::Tesseract.new(path) }
-    when ".jpg" 
       @converter = @options.fetch(:text_extractor) { TextExtractors::PDFReader.new(path) }
+    when ".jpg" 
+      @converter = @options.fetch(:ocr) { ImageProcessors::TesseractOCR.new(path) }
     else 
       raise "This file type can't be converted"
     end
