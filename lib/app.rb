@@ -24,7 +24,6 @@ train_hash = {
   living_space: "1000 Sq Ft",
   lot_size: "3000 Sq Ft",
   dwelling_type: "Detached",
-  dwelling_style: "One Storey",
   garage_size: "Single",
 }
 
