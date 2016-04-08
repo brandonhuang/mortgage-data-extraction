@@ -23,7 +23,7 @@ class Extractor
         after = match.captures.first
         @key_hash[key] = {after: after}
       else
-        puts "Error: #{key} was not found in data string."
+        raise "Error: #{key} was not found in data string."
       end
     end
   end
@@ -39,15 +39,17 @@ class Extractor
       elsif match = /\s#{prop[:before]}\s((?:(?!#{prop[:before]}).)*?)\s#{prop[:after]}\s/.match(data)
         @return_hash[key] = match.captures.first
       else
-        puts "Error: #{key} data was not found in document."
+        puts "#{key} data was not found in document."
       end
     end
+    
+    raise "No data was found" if @return_hash.empty? 
 
     methods.each do |method, key|
       if self.methods.include? method
         method(method).call(key)
       else
-        puts "Error: #{method} is not a method"
+        raise "#{method} is not a method"
       end
     end
 
