@@ -25,6 +25,7 @@ train_hash = {
   lot_size: "3000 Sq Ft",
   dwelling_type: "Detached",
   garage_size: "Single",
+  garage_type: "Attached"
 }
 
 # train

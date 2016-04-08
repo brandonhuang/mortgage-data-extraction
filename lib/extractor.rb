@@ -36,7 +36,7 @@ class Extractor
         @return_hash[key] = match.captures.first
       elsif prop[:after].nil? && match = /\s#{prop[:before]}\s(.*?)/.match(data)
         @return_hash[key] = match.captures.first
-      elsif match = /\s#{prop[:before]}\s(.*?)\s#{prop[:after]}\s/.match(data)
+      elsif match = /\s#{prop[:before]}\s((?:(?!#{prop[:before]}).)*?)\s#{prop[:after]}\s/.match(data)
         @return_hash[key] = match.captures.first
       else
         puts "Error: #{key} data was not found in document."
