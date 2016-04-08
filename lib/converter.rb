@@ -3,34 +3,33 @@ require 'pdf-reader'
 require 'tesseract'
 
 class Converter
-  def initialize
+ 
+  def self.call(path)
+    file = new(path)
+    file.to_s
   end
 
-  def self.to_s(path)
-    ext = File.extname path
+  def initialize(path, options = {})
+    @path       = path
+    @options    = options
+    @converter  = load_converter(path) 
+  end
 
-    if ext == ".pdf"
-      pdf_to_s path
-    elsif ext == ".jpg"
-      img_to_s path
+  def to_s
+    @converter.run
+  end
+
+  private 
+
+  
+  def load_converter
+    case File.extname(@path)
+    when ".pdf"  
+      @converter = @options.fetch(:ocr) { ImageProcessors::Tesseract.new(path) }
+    when ".jpg" 
+      @converter = @options.fetch(:text_extractor) { TextExtractors::PDFReader.new(path) }
+    else 
+      raise "This file type can't be converted"
     end
-  end
-
-  def self.img_to_s(path)
-    e = Tesseract::Engine.new { |e|
-      e.language  = :eng
-      e.blacklist = '|'
-    }
-
-    e.text_for(path)
-  end
-
-  def self.pdf_to_s(path)
-    pdf = PDF::Reader.new(path)
-    raw_text = ""
-    pdf.pages.each do |page|
-      raw_text += page.text
-    end
-    return raw_text
   end
 end

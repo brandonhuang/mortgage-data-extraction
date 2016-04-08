@@ -1,11 +1,6 @@
-# Working with Tesseract version 3.02.02_3d
-# Export environment variables so compiler can find tessract and leptonica
-ENV['CFLAGS'] = '-I/usr/local/Cellar/tesseract/3.02.02_3/include -I/usr/local/Cellar/leptonica/1.72/include'
-ENV['LDFLAGS'] = '-L/usr/local/Cellar/tesseract/3.02.02_3/lib -L/usr/local/Cellar/leptonica/1.72/lib'
-
-require 'tesseract'
-require 'pdf-reader'
 require 'pry'
+require_relative 'image_processors/tesseract'
+require_relative 'text_extractors/pdf_reader'
 require_relative 'extractor.rb'
 require_relative 'converter.rb'
 
@@ -32,7 +27,7 @@ train_hash = {
 extractor.train(train_data, train_hash)
 
 # convert to string
-data = Converter.to_s(Dir.pwd + "/images/app.pdf")
+data = Converter.call(Dir.pwd + "/images/app.pdf")
 
 # extract data
 pp extractor.extract(data, {
