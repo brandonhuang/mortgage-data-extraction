@@ -2,8 +2,8 @@ require 'pry'
 require 'json'
 
 class Extractor
-  def initialize(path_to_keys)
-    @key_hash = load_keys(path_to_keys) || {}
+  def initialize(path = nil)
+    path.nil? ? @key_hash = {} : @key_hash = load_keys(path)
     @return_hash = {}
   end
 
