@@ -1,0 +1,46 @@
+{
+  "name": {
+    "before": "Name:",
+    "after": "Address:"
+  },
+  "assets": {
+    "before": "Value",
+    "after": "Liabilities"
+  },
+  "liabilities": {
+    "before": "Payoff",
+    "after": "ALT"
+  },
+  "existing_mortgage": {
+    "before": "Amt:",
+    "after": "Mortgage"
+  },
+  "requested_mortgage": {
+    "before": "Amount:",
+    "after": "Net"
+  },
+  "propert_age": {
+    "before": "Age:",
+    "after": "Heating"
+  },
+  "living_space": {
+    "before": "Detached",
+    "after": "Lot"
+  },
+  "lot_size": {
+    "before": "Space:",
+    "after": "Detached"
+  },
+  "dwelling_type": {
+    "before": "Dwelling Type:",
+    "after": "Dwelling Style:"
+  },
+  "garage_size": {
+    "before": "Garage Size:",
+    "after": "Garage Type:"
+  },
+  "garage_type": {
+    "before": "Type:",
+    "after": "Taxation"
+  }
+}

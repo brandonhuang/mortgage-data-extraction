@@ -1,8 +1,9 @@
 require 'pry'
+require 'json'
 
 class Extractor
-  def initialize
-    @key_hash = {}
+  def initialize(path_to_keys)
+    @key_hash = load_keys(path_to_keys) || {}
     @return_hash = {}
   end
 
@@ -28,6 +29,14 @@ class Extractor
     end
   end
 
+  def export_keys(path = Dir.pwd + '/lib/extractor_keys/keys.json')
+    File.open(path, "w") { |f| f << JSON.pretty_generate(@key_hash) }
+  end
+
+  def load_keys(path)
+    @key_hash = JSON.parse(IO.read(path), symbolize_names: true)
+  end
+
   def extract(data, methods = {})
     data = data.gsub(/[\n\r]/," ").squeeze(' ')
 
@@ -45,11 +54,12 @@ class Extractor
     
     raise "No data was found" if @return_hash.empty? 
 
+    # Run post processing of data if specified
     methods.each do |method, key|
       if self.methods.include? method
         method(method).call(key)
       else
-        raise "#{method} is not a method"
+        raise "#{method} is not an extractor method"
       end
     end
 

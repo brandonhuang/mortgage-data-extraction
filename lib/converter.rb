@@ -21,7 +21,6 @@ class Converter
   end
 
   private 
-
   
   def load_converter(path)
     case File.extname(@path)
