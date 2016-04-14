@@ -21,7 +21,7 @@ train_hash = {
 }
 
 # Initialize extractor and set key hash
-extractor = Extractor.new(Dir.pwd + "/lib/extractor_keys/keys.json")
+extractor = Extractor.new(Dir.pwd + "/lib/extractor_keys/keys.json") 
 
 # convert to string
 data = Converter.call(Dir.pwd + "/images/app.pdf")

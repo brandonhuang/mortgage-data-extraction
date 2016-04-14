@@ -1,0 +1,6 @@
+{
+  "test": {
+    "before": "before",
+    "after": "after"
+  }
+}

@@ -2,12 +2,20 @@ require 'pry'
 require 'json'
 
 class Extractor
+  attr_accessor :key_hash
+
   def initialize(path = nil)
-    path.nil? ? @key_hash = {} : @key_hash = load_keys(path)
+    path.nil? ? @key_hash = {} : @key_hash = import_keys(path)
     @return_hash = {}
   end
 
-  attr_accessor :key_hash
+  def import_keys(path)
+    @key_hash = JSON.parse(IO.read(path), symbolize_names: true)
+  end
+
+  def export_keys(path = Dir.pwd + '/lib/extractor_keys/keys.json')
+    File.open(path, "w") { |f| f << JSON.pretty_generate(@key_hash) }
+  end
 
   def train(data, hash)
     # Remove duplicate spaces and newlines
@@ -27,14 +35,6 @@ class Extractor
         raise "Error: #{key} was not found in data string."
       end
     end
-  end
-
-  def export_keys(path = Dir.pwd + '/lib/extractor_keys/keys.json')
-    File.open(path, "w") { |f| f << JSON.pretty_generate(@key_hash) }
-  end
-
-  def load_keys(path)
-    @key_hash = JSON.parse(IO.read(path), symbolize_names: true)
   end
 
   def extract(data, methods = {})
