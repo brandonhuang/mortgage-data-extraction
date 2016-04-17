@@ -5,3 +5,6 @@ gem "pdf-reader"
 gem "pry"
 gem "mini_magick"
 gem "rspec"
+
+gem "rest-client"
+gem "dotenv"

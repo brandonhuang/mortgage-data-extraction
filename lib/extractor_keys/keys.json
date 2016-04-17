@@ -19,7 +19,7 @@
     "before": "Amount:",
     "after": "Net"
   },
-  "propert_age": {
+  "property_age": {
     "before": "Age:",
     "after": "Heating"
   },
