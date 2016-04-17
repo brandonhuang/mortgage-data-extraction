@@ -41,11 +41,11 @@ class Extractor
     data = data.gsub(/[\n\r]/," ").squeeze(' ')
 
     @key_hash.each do |key, prop|
-      if prop[:before].nil? && match = /(.*?)\s#{prop[:after]}\s/.match(data)
+      if prop[:before].nil? && match = /(.*?)\s#{prop[:after]}\s/i.match(data)
         @return_hash[key] = match.captures.first
-      elsif prop[:after].nil? && match = /\s#{prop[:before]}\s(.*?)/.match(data)
+      elsif prop[:after].nil? && match = /\s#{prop[:before]}\s(.*?)/i.match(data)
         @return_hash[key] = match.captures.first
-      elsif match = /\s#{prop[:before]}\s((?:(?!#{prop[:before]}).)*?)\s#{prop[:after]}\s/.match(data)
+      elsif match = /\s#{prop[:before]}\s((?:(?!#{prop[:before]}).)*?)\s#{prop[:after]}\s/i.match(data)
         @return_hash[key] = match.captures.first
       else
         puts "#{key} data was not found in document."
