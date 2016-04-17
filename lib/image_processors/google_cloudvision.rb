@@ -54,5 +54,3 @@ module ImageProcessors
     end
   end
 end
-
-# ImageProcessors::CloudVision.new.request('TEXT_DETECTION', 'https://storage.googleapis.com/buckot/app2.jpg')
