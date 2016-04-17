@@ -24,11 +24,10 @@ train_hash = {
 extractor = Extractor.new(Dir.pwd + "/lib/extractor_keys/keys.json") 
 
 # convert to string
-data = Converter.call(Dir.pwd + "/images/app.pdf")
+data = Converter.call([Dir.pwd + "/images/app1.jpg", Dir.pwd + "/images/app2.jpg"])
 
 # extract data
 pp extractor.extract(data, {
   split_assets: :assets,
   split_liabilities: :liabilities
 })
-
