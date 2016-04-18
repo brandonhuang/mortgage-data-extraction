@@ -26,11 +26,11 @@ class Converter
   private 
   
   def load_converter(path)
-    case File.extname(@path)
+    case File.extname(path)
     when ".pdf"  
       @converter = @options.fetch(:text_extractor) { TextExtractors::PDFReader.new(path) }
     when ".jpg" 
-      @converter = @options.fetch(:ocr) { ImageProcessors::CloudVision.new(path) }
+      @converter = @options.fetch(:ocr) { ImageProcessors::TesseractOCR.new(path) }
     else 
       raise "This file type can't be converted"
     end
