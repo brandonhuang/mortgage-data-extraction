@@ -38,12 +38,6 @@ describe Extractor do
   describe '#train' do 
     before(:each) do
       @extractor = Extractor.new
-      # @data = '1 Name: Aaron Dufall Passions: Anime, Coding, Teaching'
-      # @train_hash = {
-      #   id: "1",
-      #   name: "Aaron Dufall",
-      #   passions: "Anime, Coding, Teaching"
-      # }
     end
 
     it 'sets the correct key_hash given a training set' do
@@ -90,6 +84,56 @@ describe Extractor do
       }
 
       expect {@extractor.train(data, train_hash)}.to raise_error('Error: name was not found in data string.')
+    end
+  end
+
+  describe '#extract' do
+    before(:all) do
+      @extractor = Extractor.new
+      @extractor.key_hash = {
+        :id => {
+          :after => "Name:"
+        },
+        :name => {
+          :before => "Name:",
+          :after => "Passions:"
+        },
+        :passions => {
+          :before => "Passions:"
+        }
+      }
+    end
+
+    it 'extracts data based on key_hash' do
+      data = '123 Name: John Doe Passions: Running'
+      expect(@extractor.extract(data)).to eq({
+        :id => '123',
+        :name => "John Doe",
+        :passions => "Running"
+      })
+    end
+
+    it 'is case insensitive' do
+      data = '123 name: John Doe passions: Running'
+      expect(@extractor.extract(data)).to eq({
+        :id => '123',
+        :name => "John Doe",
+        :passions => "Running"
+      })        
+    end
+
+    it 'unmatched keys are nil' do
+      data = 'Name: John Doe Passions:'
+      expect(@extractor.extract(data)).to eq({
+        :id => nil,
+        :name => "John Doe",
+        :passions => nil
+      })
+    end
+
+    it 'raises an error when training there are no matches' do
+      data = ''
+      expect {@extractor.extract(data)}.to raise_error('Error: No data was matched')
     end
   end
 end

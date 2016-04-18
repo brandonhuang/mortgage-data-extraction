@@ -39,28 +39,29 @@ class Extractor
 
   def extract(data, methods = {})
     data = data.gsub(/[\n\r]/," ").squeeze(' ')
+    @return_hash = {}
 
     @key_hash.each do |key, prop|
-      if prop[:before].nil? && match = /(.*?)\s#{prop[:after]}\s/i.match(data)
+      if prop[:before].nil? && match = /(.*)\s#{prop[:after]}\s/i.match(data)
         @return_hash[key] = match.captures.first
-      elsif prop[:after].nil? && match = /\s#{prop[:before]}\s(.*?)/i.match(data)
+      elsif prop[:after].nil? && match = /\s#{prop[:before]}\s(.*)/i.match(data)
         @return_hash[key] = match.captures.first
-      elsif match = /\s#{prop[:before]}\s((?:(?!#{prop[:before]}).)*?)\s#{prop[:after]}\s/i.match(data)
+      elsif match = /(?:^|\s)#{prop[:before]}\s((?:(?!#{prop[:before]}).)*?)\s#{prop[:after]}(?:\s|$)/i.match(data)
         @return_hash[key] = match.captures.first
       else
-        puts "#{key} data was not found in document."
+        warn "#{key} data was not found in document"
+        @return_hash[key] = nil
       end
     end
-    
-    raise "No data was found" if @return_hash.empty? 
+
+    raise "Error: No data was matched" if @return_hash.all? { |key, val| val.nil? }
 
     # Run post processing of data if specified
     methods.each do |method, key|
-      if self.methods.include? method
-        method(method).call(key)
-      else
-        raise "#{method} is not an extractor method"
-      end
+      raise "Error: #{method} is not an extractor method" if !self.methods.include?
+      raise "Error: #{key} is nil"if !key.nil?
+
+      method(method).call(key)
     end
 
     return @return_hash
