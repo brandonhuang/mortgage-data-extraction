@@ -1,5 +1,6 @@
 require_relative "../lib/converter"
 require_relative "../lib/extractor"
+require_relative "../lib/post_processor"
 
 RSpec.configure do |config|
   # Use color in STDOUT
