@@ -14,7 +14,6 @@ data_string = Converter.call([Dir.pwd + "/images/app.pdf"])
 
 # extract data
 extracted_data = extractor.extract(data_string)
-pp extracted_data
 
 # format liabilities and 
 PostProcessor::parse_assets(extracted_data, :assets)
