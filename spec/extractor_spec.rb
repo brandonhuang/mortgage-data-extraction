@@ -63,20 +63,6 @@ describe Extractor do
       })
     end
 
-    it 'handles whitespace in data' do
-      data = '      Name:   Aaron     '
-      train_hash = {
-        name: "Aaron"
-      }
-
-      @extractor.train(data, train_hash)
-      expect(@extractor.key_hash).to eq({
-        :name => {
-          :before => "Name:"
-        }  
-      })
-    end
-
     it 'raises an error when training data is incorrect' do
       data = 'Name: John'
       train_hash = {
@@ -134,6 +120,22 @@ describe Extractor do
     it 'raises an error when training there are no matches' do
       data = ''
       expect {@extractor.extract(data)}.to raise_error('Error: No data was matched')
+    end
+  end
+
+  describe '#clean' do
+    before(:all) { @extractor = Extractor.new }
+
+    it 'removes excess whitespace' do
+      string = '    test:     string    '
+
+      expect(@extractor.clean(string)).to eq("test: string")
+    end
+
+    it 'removes carraige returns and newlines' do
+      string = "test: \n\r string"
+
+      expect(@extractor.clean(string)).to eq("test: string")
     end
   end
 end

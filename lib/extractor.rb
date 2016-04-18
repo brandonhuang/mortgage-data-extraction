@@ -18,8 +18,7 @@ class Extractor
   end
 
   def train(data, hash)
-    # Remove duplicate spaces and newlines
-    data = data.gsub(/[\n\r]/," ").squeeze(' ')
+    data = clean(data)
 
     hash.each do |key, prop|
       if match = Regexp.new('\s(\S+)\s' + Regexp.quote(prop) + '\s(\S+)\s').match(data)
@@ -37,53 +36,31 @@ class Extractor
     end
   end
 
-  def extract(data, methods = {})
-    data = data.gsub(/[\n\r]/," ").squeeze(' ')
+  def extract(data)
+    data = clean(data)
     @return_hash = {}
 
     @key_hash.each do |key, prop|
       if prop[:before].nil? && match = /(.*)\s#{prop[:after]}\s/i.match(data)
-        @return_hash[key] = match.captures.first
+        match = match.captures.first
       elsif prop[:after].nil? && match = /\s#{prop[:before]}\s(.*)/i.match(data)
-        @return_hash[key] = match.captures.first
-      elsif match = /(?:^|\s)#{prop[:before]}\s((?:(?!#{prop[:before]}).)*?)\s#{prop[:after]}(?:\s|$)/i.match(data)
-        @return_hash[key] = match.captures.first
+        match = match.captures.first
+      elsif match = /(?:^|\s)#{prop[:before]}\s(.*?)\s#{prop[:after]}(?:\s|$)/i.match(data)
+        match = match.captures.first
       else
         warn "#{key} data was not found in document"
-        @return_hash[key] = nil
+        match = nil
       end
+
+      @return_hash[key] = match
     end
 
     raise "Error: No data was matched" if @return_hash.all? { |key, val| val.nil? }
 
-    # Run post processing of data if specified
-    methods.each do |method, key|
-      raise "Error: #{method} is not an extractor method" if !self.methods.include?
-      raise "Error: #{key} is nil"if !key.nil?
-
-      method(method).call(key)
-    end
-
     return @return_hash
   end
 
-  def split_assets(assets)
-    @return_hash[assets] = @return_hash[assets].scan(/(.*?)(\$\s[\d,]+\.\d{2})/).map do |entry|
-        {
-          name: entry.first.strip,
-          amount: entry.last.gsub!(/[^\d\.]/, '').to_f
-        }
-    end
-  end
-
-  def split_liabilities(liabilities)
-    @return_hash[liabilities] = @return_hash[liabilities].scan(/(.*?)(\$\s[\d,]+\.\d{2})\s(\$\s[\d,]+\.\d{2})\s(\$\s[\d,]+\.\d{2})/).map do |entry|
-      {
-        name: entry.first.strip,
-        value: entry[1].gsub!(/[^\d\.]/, '').to_f,
-        balance: entry[2].gsub!(/[^\d\.]/, '').to_f,
-        monthly: entry.last.gsub!(/[^\d\.]/, '').to_f
-      }
-    end
+  def clean(data)
+    data = data.gsub(/[\n\r]/," ").squeeze(' ').strip
   end
 end
