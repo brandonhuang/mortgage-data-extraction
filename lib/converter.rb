@@ -1,14 +1,11 @@
-require_relative 'image_processors/tesseract_ocr'
+require_relative 'image_processors/google_cloudvision'
 require_relative 'text_extractors/pdf_reader'
-require_relative 'image_processors/google_cloudvision.rb'
 require 'pry'
-require 'pdf-reader'
-require 'tesseract'
 
 class Converter
-  def self.call(paths)
+  def self.call(paths, options = {})
     paths.collect do | path |
-      file = new(path)
+      file = new(path, options)
       file.to_s
     end.join(" ")
   end
@@ -28,11 +25,13 @@ class Converter
   def load_converter(path)
     case File.extname(path)
     when ".pdf"  
-      @converter = @options.fetch(:text_extractor) { TextExtractors::PDFReader.new(path) }
-    when ".jpg" 
-      @converter = @options.fetch(:ocr) { ImageProcessors::CloudVision.new(path) }
+      @converter = @options.fetch(:text_extractor) { TextExtractors::PDFReader }
+    when ".jpg", ".png" 
+      @converter = @options.fetch(:ocr) { ImageProcessors::CloudVision }
     else 
       raise "This file type can't be converted"
     end
+
+    @converter = @converter.new(path)
   end
 end
