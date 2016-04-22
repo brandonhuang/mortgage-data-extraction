@@ -20,7 +20,7 @@ describe PostProcessor do
     end
   end
 
-  describe '#split_liabilities' do
+  describe '#parse_liabs' do
     it 'parses liabilities key to a hash' do
       data = {
         assets: "assets",
