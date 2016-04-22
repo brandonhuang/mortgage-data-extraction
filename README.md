@@ -8,7 +8,7 @@ This program extracts data from mortgage documents, but can be configured to ext
 
 Before You Begin
 ---------------------
-In order to convert images to tex,  you will need a Google Cloud Vision [browser API key](https://cloud.google.com/vision/docs/auth-template/cloud-api-auth?hl=ja#set_up_an_api_key) in order to read images. 
+In order to convert images to tex,  you will need a Google Cloud Vision [browser API key](https://cloud.google.com/vision/docs/auth-template/cloud-api-auth?#set_up_an_api_key) in order to read images. 
 
 Create a .env file with the following contents
 
