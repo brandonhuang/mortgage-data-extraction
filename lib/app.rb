@@ -9,7 +9,7 @@ require_relative 'text_extractors/pdf_reader.rb'
 extractor = Extractor.new(Dir.pwd + "/lib/extractor_keys/keys.json") 
 
 # convert pdf/image to string
-data_string = Converter.call([Dir.pwd + "/images/app1.jpg"], {
+data_string = Converter.call([Dir.pwd + "/images/app.pdf"], {
   :ocr => ImageProcessors::CloudVision,
   :text_extractor => TextExtractors::PDFReader
 })
