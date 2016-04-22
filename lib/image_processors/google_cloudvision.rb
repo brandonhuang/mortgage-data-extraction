@@ -50,6 +50,7 @@ module ImageProcessors
 
     def api_url
       Dotenv.load
+      raise "Error: An API key must be provided in .env" if ENV['GCP_API_KEY'].empty?
       "https://vision.googleapis.com/v1/images:annotate?key=#{ENV['GCP_API_KEY']}"
     end
   end
