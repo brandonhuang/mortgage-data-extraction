@@ -62,10 +62,10 @@ train_hash = { Name: 'John Doe' }
 
 # key hash
 # {
-# name: {
-#   before: "Name:",
-#   after: "Address:"
-# }
+#   name: {
+#     before: "Name:",
+#     after: "Address:"
+#   }
 # }
 ```
 The keys generated from the training data can be imported and exported with `#export_keys` and `#import_keys`.
